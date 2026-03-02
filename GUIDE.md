@@ -329,6 +329,31 @@ If the socket doesn't exist, Docker daemon isn't running.
 | `Permission denied` | User not in docker group | `sudo usermod -aG docker $USER` then logout/login |
 | `cgroup v2 incompatibility` | Kernel cgroups v2 issue | Try rootless Docker or update kernel |
 
+#### 5. Running Inside a Container (Codespaces, CI, etc.)
+
+If you're inside a Docker container (check: `ls /.dockerenv`), you cannot run Docker directly. Options:
+
+**Option A: Use host Docker socket (if available)**
+```bash
+# Run your container with socket mounted:
+docker run -v /var/run/docker.sock:/var/run/docker.sock ...
+```
+
+**Option B: Run on host machine**
+- Exit the container and run on your local machine
+- Use a VM instead of a container
+
+**Option C: Use Docker-in-Docker (dind)**
+```bash
+# Only works with privileged containers
+docker run --privileged ...
+```
+
+**Option D: Use Tier 1 only (Python validation)**
+- Skip reconstruction (requires Docker)
+- Use this pipeline for validation and geo.txt generation only
+- Run ODM separately on a machine with Docker
+
 #### 5. Running Docker in Containers/VMs
 
 If running inside a container (like Codespaces, GitLab CI), you need:
