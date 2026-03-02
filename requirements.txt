@@ -1,25 +1,15 @@
-# Core scientific computing
-numpy
-pandas
-scipy
-matplotlib
-openpyxl
+# Core dependencies
+typer>=0.9.0
+pydantic>=2.0.0
+jsonschema>=4.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+boto3>=1.26.0
 
 # Testing
-pytest
-pytest-cov
+pytest>=7.4.0
+pytest-cov>=4.1.0
 
 # Code quality
-ruff
-black
-
-# Utilities
-requests
-python-dotenv
-
-# Jupyter support
-ipykernel
-notebook
-
-# Type checking
-mypy
+ruff>=0.1.0
+black>=23.0.0

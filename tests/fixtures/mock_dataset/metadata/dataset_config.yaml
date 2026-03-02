@@ -1,0 +1,5 @@
+dataset_id: mock_dataset
+description: Mock dataset for testing the pipeline
+created: 2024-01-15
+drone_model: DJI Mavic 3
+camera_resolution: 4000x3000

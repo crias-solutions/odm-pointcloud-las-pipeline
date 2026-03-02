@@ -1,0 +1,17 @@
+name: odm-pipeline
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+    - typer
+    - pydantic
+    - jsonschema
+    - numpy
+    - pandas
+    - boto3
+    - pytest
+    - pytest-cov
+    - ruff
