@@ -288,12 +288,87 @@ Set PYTHONPATH:
 export PYTHONPATH=/path/to/project
 ```
 
+---
+
+### Docker Daemon Issues
+
+If you encounter errors like:
+- `Cannot connect to the Docker daemon at unix:///var/run/docker.sock`
+- `mkdir: cannot create directory 'cpuset': Read-only file system`
+
+#### 1. Verify Docker is Installed
+
+```bash
+docker --version
+```
+
+#### 2. Start Docker Daemon
+
+```bash
+# Ubuntu/Debian
+sudo service docker start
+
+# Or
+sudo dockerd &
+```
+
+#### 3. Check Docker Socket
+
+```bash
+ls -la /var/run/docker.sock
+```
+
+If the socket doesn't exist, Docker daemon isn't running.
+
+#### 4. Common Causes & Solutions
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| `Read-only file system` | Running inside a container without proper cgroup access | Use `--privileged` flag or run on host |
+| `Cannot connect to daemon` | Docker daemon not running | `sudo service docker start` |
+| `Permission denied` | User not in docker group | `sudo usermod -aG docker $USER` then logout/login |
+| `cgroup v2 incompatibility` | Kernel cgroups v2 issue | Try rootless Docker or update kernel |
+
+#### 5. Running Docker in Containers/VMs
+
+If running inside a container (like Codespaces, GitLab CI), you need:
+
+```bash
+# Run container with Docker socket mounted
+docker run -v /var/run/docker.sock:/var/run/docker.sock ...
+
+# Or use --privileged (less secure)
+docker run --privileged ...
+```
+
+#### 6. Rootless Docker (if privileged mode unavailable)
+
+```bash
+# Install rootless Docker
+dockerd-rootless-setuptool.sh install
+
+# Start
+dockerd-rootless.sh
+```
+
+#### 7. Verify Docker Works
+
+```bash
+docker run hello-world
+```
+
+If this fails, Docker isn't properly configured in your environment.
+
+---
+
 ### Docker Not Available
 
 Some environments don't support Docker (containers, certain VMs, CI/CD):
 - Use Tier 1 (Python only) for validation and geo.txt generation
 - Run reconstruction on a separate machine with Docker
 - Or use a cloud-based Docker service
+
+---
 
 ### Docker Permission Denied
 
@@ -302,6 +377,8 @@ Add user to docker group:
 sudo usermod -aG docker $USER
 # Then logout and login back
 ```
+
+---
 
 ### PDAL Not Found
 
